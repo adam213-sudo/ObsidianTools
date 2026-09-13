@@ -1,0 +1,11 @@
+/* الألوان الأساسية للوضع الفاتح (الافتراضي) */
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* الوضع المظلم (يتم تفعيله فقط عند إضافة كلاس dark-mode لـ body) */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}

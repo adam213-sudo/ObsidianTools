@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Report Broken Link - Obsidian Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background-color: #181818;
+            border-bottom: 1px solid #282828;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+            direction: ltr;
+        }
+        .logo span {
+            color: #ff6600;
+        }
+        .lang-select {
+            background-color: #242424;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .main-content {
+            flex: 1;
+            max-width: 600px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .report-card {
+            background-color: #1a1a1a;
+            border: 1px solid #282828;
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .report-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .report-desc {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: #141414;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-textarea:focus {
+            border-color: #ff6600;
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #e55c00;
+        }
+        .success-msg {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #ff6600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 13px;
+            border-top: 1px solid #222;
+            background-color: #141414;
+        }
+        footer a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo" dir="ltr">
+            Obsidian<span>Tools</span>
+        </a>
+        <div class="nav-right">
+            <select class="lang-select" id="langSelect" onchange="changeLanguageDropdown()">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="report-card">
+            <h1 class="report-title" id="pageHeading">Report a Broken Link</h1>
+            <p class="report-desc" id="pageDesc">Found a broken download link or issue? Let us know so we can fix it quickly.</p>
+            
+            <div class="success-msg" id="successMsg">Thank you! Your report has been submitted successfully.</div>
+
+            <form id="reportForm" onsubmit="submitReport(event)">
+                <div class="form-group">
+                    <label class="form-label" id="labelToolName">Tool or Page Name</label>
+                    <input type="text" class="form-input" id="toolNameInput" required placeholder="e.g. CleanMaster Win">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="labelLink">Problematic URL (Optional)</label>
+                    <input type="text" class="form-input" id="linkInput" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" id="labelDetails">Details / Description</label>
+                    <textarea class="form-textarea" id="detailsInput" required placeholder="Describe the issue..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Send Report</button>
+            </form>
+
+            <a href="index.html" class="back-link" id="backHomeLink"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <footer>
+       
+       <span id="footerText">&copy; 2026 Obsidian Tools. All rights reserved.</span> | <a href="report.html" id="reportLink">Report Broken Link</a>
+    </footer>
+
+    <script>
+        const translations = {
+            ar: {
+                dir: 'rtl',
+                title: 'الإبلاغ عن رابط معطل - Obsidian Tools',
+                heading: 'الإبلاغ عن رابط معطل',
+                desc: 'هل واجهتك مشكلة في رابط تحميل أو صفحة لا تعمل؟ أخبرنا لنقوم بإصلاحها فوراً.',
+                success: 'شكراً لك! تم إرسال بلاغك بنجاح.',
+                labelToolName: 'اسم الأداة أو الصفحة',
+                toolPlaceholder: 'مثال: كلين ماستر ويندوز',
+                labelLink: 'الرابط الذي تواجه مشكلة فيه (اختياري)',
+                labelDetails: 'تفاصيل المشكلة',
+                detailsPlaceholder: 'اكتب تفاصيل المشكلة هنا...',
+                submit: 'إرسال البلاغ',
+                back: 'العودة إلى الصفحة الرئيسية',
+                footer: '&copy; 2026 Obsidian Tools. جميع الحقوق محفوظة.',
+                report: 'الإبلاغ عن رابط معطل'
+            },
+            en: {
+                dir: 'ltr',
+                title: 'Report Broken Link - Obsidian Tools',
+                heading: 'Report a Broken Link',
+                desc: 'Found a broken download link or issue? Let us know so we can fix it quickly.',
+                success: 'Thank you! Your report has been submitted successfully.',
+                labelToolName: 'Tool or Page Name',
+                toolPlaceholder: 'e.g. CleanMaster Win',
+                labelLink: 'Problematic URL (Optional)',
+                labelDetails: 'Details / Description',
+                detailsPlaceholder: 'Describe the issue...',
+                submit: 'Send Report',
+                back: 'Back to Home',
+                footer: '&copy; 2026 Obsidian Tools. All rights reserved.',
+                report: 'Report Broken Link'
+            },
+            fr: {
+                dir: 'ltr',
+                title: 'Signaler un lien brisé - Obsidian Tools',
+                heading: 'Signaler un lien brisé',
+                desc: 'Vous avez trouvé un lien de téléchargement rompu ou un problème ? Dites-le-nous pour que nous puissions le réparer.',
+                success: 'Merci ! Votre signalement a été soumis avec succès.',
+                labelToolName: "Nom de l'outil ou de la page",
+                toolPlaceholder: 'ex: CleanMaster Win',
+                labelLink: 'URL problématique (Optionnel)',
+                labelDetails: 'Détails / Description',
+                detailsPlaceholder: 'Décrivez le problème...',
+                submit: 'Envoyer le rapport',
+                back: "Retour à l'accueil",
+                footer: '&copy; 2026 Obsidian Tools. Tous droits réservés.',
+                report: 'Signaler un lien brisé'
+            }
+        };
+
+        function getQueryParams() {
+            const params = {};
+            window.location.search.substring(1).split('&').forEach(param => {
+                const pair = param.split('=');
+                if (pair.length === 2) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            });
+            return params;
+        }
+
+        const params = getQueryParams();
+        let currentLang = params.lang || 'ar';
+        if (!translations[currentLang]) currentLang = 'ar';
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            const root = document.getElementById('html-root');
+
+            root.setAttribute('lang', lang);
+            root.setAttribute('dir', t.dir);
+
+            document.getElementById('pageTitle').innerText = t.title;
+            document.getElementById('pageHeading').innerText = t.heading;
+            document.getElementById('pageDesc').innerText = t.desc;
+            document.getElementById('successMsg').innerText = t.success;
+            
+            document.getElementById('labelToolName').innerText = t.labelToolName;
+            document.getElementById('toolNameInput').placeholder = t.toolPlaceholder;
+            document.getElementById('labelLink').innerText = t.labelLink;
+            document.getElementById('labelDetails').innerText = t.labelDetails;
+            document.getElementById('detailsInput').placeholder = t.detailsPlaceholder;
+            document.getElementById('submitBtn').innerText = t.submit;
+            document.getElementById('backHomeLink').innerHTML = `<i class="fa-solid fa-arrow-${lang === 'ar' ? 'right' : 'left'}"></i> ${t.back}`;
+
+            document.getElementById('footerText').innerHTML = t.footer;
+            document.getElementById('reportLink').innerText = t.report;
+            document.getElementById('langSelect').value = lang;
+
+            document.getElementById('reportLink').setAttribute('href', `report.html?lang=${lang}`);
+            document.getElementById('backHomeLink').setAttribute('href', `index.html?lang=${lang}`);
+        }
+
+        function changeLanguageDropdown() {
+            const selectedLang = document.getElementById('langSelect').value;
+            const newUrl = `report.html?lang=${selectedLang}`;
+            window.history.replaceState({}, '', newUrl);
+            applyLanguage(selectedLang);
+        }
+
+        function submitReport(event) {
+            event.preventDefault();
+            const successMsg = document.getElementById('successMsg');
+            successMsg.style.display = 'block';
+            document.getElementById('reportForm').reset();
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 4000);
+        }
+
+        window.onload = function() {
+            applyLanguage(currentLang);
+        };
+    </script>
+</body>
+</html>

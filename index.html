@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Obsidian Tools - أدوات وبرامج موثوقة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #121212;
+            --bg-header: #181818;
+            --bg-aside: #151515;
+            --bg-card: #181818;
+            --border-color: #282828;
+            --border-card: #252525;
+            --card-shadow: none;
+            --text-main: #e0e0e0;
+            --text-muted: #999;
+            --input-bg: #1a1a1a;
+            --input-border: #2c2c2c;
+            --footer-bg: #141414;
+            --hover-item: #1f1f1f;
+        }
+
+        html.light {
+            --bg-body: #f4f5f7;
+            --bg-header: #ffffff;
+            --bg-aside: #ffffff;
+            --bg-card: #ffffff;
+            --border-color: #cbd5e1;
+            --border-card: #cbd5e1;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --input-bg: #f9fafb;
+            --input-border: #d1d5db;
+            --footer-bg: #ffffff;
+            --hover-item: #f3f4f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg-header);
+            border-bottom: 2px solid var(--border-color);
+            direction: ltr;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        .logo img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo span {
+            color: #ff6600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .lang-select, .theme-btn {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+        .theme-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            padding: 0;
+        }
+        .main-layout {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+        aside {
+            width: 280px;
+            background-color: var(--bg-aside);
+            border-left: 2px solid var(--border-color);
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        html[dir="ltr"] aside {
+            border-left: none;
+            border-right: 2px solid var(--border-color);
+        }
+        .menu-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .menu-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ff6600;
+            text-align: center;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        .menu-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background-color: #ff6600;
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background-color: var(--hover-item);
+            color: var(--text-main);
+        }
+        .menu-item.active {
+            background-color: #ff6600;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.3);
+        }
+        .content-area {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .hero-section h1 {
+            font-size: 32px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 30px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, background-color 0.3s, color 0.3s;
+        }
+        html[dir="rtl"] .search-box input {
+            padding: 14px 45px 14px 20px;
+        }
+        html[dir="ltr"] .search-box input {
+            padding: 14px 20px 14px 45px;
+        }
+        .search-box input:focus {
+            border-color: #ff6600;
+        }
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        html[dir="rtl"] .search-box i {
+            right: 20px;
+            left: auto;
+        }
+        html[dir="ltr"] .search-box i {
+            left: 20px;
+            right: auto;
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .tool-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            box-shadow: var(--card-shadow);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s, background-color 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        .tool-card:hover {
+            transform: translateY(-3px);
+            border-color: #ff6600;
+        }
+        .tool-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .tool-rating {
+            color: #f59e0b;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .tool-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .tool-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .tool-body h3 {
+            font-size: 17px;
+            color: var(--text-main);
+            margin-bottom: 0;
+        }
+        .tool-body p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .tool-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .details-btn, .quick-dl-btn {
+            background-color: transparent;
+            color: #ff6600;
+            border: 1px solid #ff6600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quick-dl-btn {
+            background-color: #ff6600;
+            color: #fff;
+        }
+        .details-btn:hover {
+            background-color: #ff6600;
+            color: #fff;
+        }
+        .quick-dl-btn:hover {
+            opacity: 0.9;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 2px solid var(--border-color);
+            background-color: var(--footer-bg);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        footer a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Logo" onerror="this.src='logo.jpg'">
+            Obsidian<span>Tools</span>
+        </a>
+        <div class="nav-right">
+            <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغيير الوضع">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+            <select class="lang-select" id="langSelect" onchange="changeLanguageDropdown()">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="main-layout">
+        <aside>
+            <div class="menu-section">
+                <span class="menu-title" id="menuTitleBrowse">التصفح</span>
+                <a href="#" class="menu-item active" onclick="filterCategory('all', event)">
+                    <i class="fa-solid fa-house"></i>
+                    <span id="menuHome">الرئيسية</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('popular', event)">
+                    <i class="fa-solid fa-fire"></i>
+                    <span id="menuPopular">الأكثر رواجاً</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('rated', event)">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="menuRated">الأعلى تقييماً</span>
+                </a>
+            </div>
+
+            <div class="menu-section">
+                <span class="menu-title" id="menuTitleCategories">التصنيفات</span>
+                <a href="#" class="menu-item" onclick="filterCategory('browsers', event)">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="menuBrowsers">المتصفحات</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('messaging', event)">
+                    <i class="fa-solid fa-comments"></i>
+                    <span id="menuMessaging">المراسلة</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('media', event)">
+                    <i class="fa-solid fa-play"></i>
+                    <span id="menuMedia">الوسائط</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('compression', event)">
+                    <i class="fa-solid fa-file-zipper"></i>
+                    <span id="menuCompression">ضغط الملفات</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('runtimes', event)">
+                    <i class="fa-solid fa-cogs"></i>
+                    <span id="menuRuntimes">المكتبات والتشغيل</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('dev', event)">
+                    <i class="fa-solid fa-code"></i>
+                    <span id="menuDev">أدوات المطورين</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('utilities', event)">
+                    <i class="fa-solid fa-tools"></i>
+                    <span id="menuUtilities">أدوات النظام</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('security', event)">
+                    <i class="fa-solid fa-shield-alt"></i>
+                    <span id="menuSecurity">الأمان والحماية</span>
+                </a>
+                <a href="#" class="menu-item" onclick="filterCategory('imaging', event)">
+                    <i class="fa-solid fa-image"></i>
+                    <span id="menuImaging">التصميم والصور</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="content-area">
+            <div class="hero-section">
+                <h1 id="heroTitle">أدوات وبرامج موثوقة</h1>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن أداة أو برنامج..." onkeyup="filterTools()">
+                </div>
+            </div>
+
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Cards will be injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <span id="footerText">&copy; 2026 Obsidian Tools. جميع الحقوق محفوظة.</span> | <a href="report.html" id="reportLink">الإبلاغ عن رابط معطل</a>
+    </footer>
+
+    <script>
+        const translations = {
+            ar: {
+                dir: 'rtl',
+                title: 'Obsidian Tools - أدوات وبرامج موثوقة',
+                heroTitle: 'أدوات وبرامج موثوقة',
+                searchPlaceholder: 'ابحث عن أداة أو برنامج...',
+                menuBrowse: 'التصفح',
+                menuHome: 'الرئيسية',
+                menuPopular: 'الأكثر رواجاً',
+                menuRated: 'الأعلى تقييماً',
+                menuCategories: 'التصنيفات',
+                menuBrowsers: 'المتصفحات',
+                menuMessaging: 'المراسلة',
+                menuMedia: 'الوسائط',
+                menuCompression: 'ضغط الملفات',
+                menuRuntimes: 'المكتبات والتشغيل',
+                menuDev: 'أدوات المطورين',
+                menuUtilities: 'أدوات النظام',
+                menuSecurity: 'الأمان والحماية',
+                menuImaging: 'التصميم والصور',
+                details: 'التفاصيل',
+                download: 'تحميل',
+                footer: '&copy; 2026 Obsidian Tools. جميع الحقوق محفوظة.',
+                report: 'الإبلاغ عن رابط معطل',
+                tools: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'متصفح جوجل كروم السريع والأكثر استخداماً في العالم.', category: 'browsers', rating: '4.9', size: '11.8 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'متصفح أوبرا المتميز بمانع الإعلانات المدمج و VPN مجاني.', category: 'browsers', rating: '4.7', size: '85 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Opera_2015_icon.svg', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'متصفح فايرفوكس الحر والمفتوح لحماية خصوصيتك وسرعتك.', category: 'browsers', rating: '4.8', size: '75 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_Logo%2C_2019.svg', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'متصفح برايف يمنع الإعلانات تلقائياً ويحافظ على الخصوصية.', category: 'browsers', rating: '4.9', size: '95 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Brave_lion_icon.svg', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'متصفح قابل للتخصيص بشكل كامل وموجه للمحترفين.', category: 'browsers', rating: '4.7', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Vivaldi_web_browser_icon.svg', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'تطبيق الاجتماعات المرئية والدروس عن بعد الشهير.', category: 'messaging', rating: '4.7', size: '65 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Zoom_Communications_Logo.svg', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'تطبيق الدردشة الصوتية والنصية الأول للاعبين والمجتمعات.', category: 'messaging', rating: '4.9', size: '80 MB', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', url: 'https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'منصة مايكروسوفت للعمل الجماعي والاجتماعات المهنية.', category: 'messaging', rating: '4.6', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'تطبيق التليجرام الرسمي للكمبيوتر للتواصل السريع.', category: 'messaging', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'مشغل الوسائط الأقوى لتشغيل جميع صيغ الفيديو والصوت.', category: 'media', rating: '4.9', size: '40 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/VLC_Icon.svg', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'تطبيق الاستماع للموسيقى والبودكاست الشهير.', category: 'media', rating: '4.8', size: '70 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'برنامج تسجيل وتحرير الصوت المفتوح المصدر.', category: 'media', rating: '4.8', size: '30 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Audacity_Logo.svg', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'برنامج تحويل وضغط ملفات الفيديو باحترافية عالية.', category: 'media', rating: '4.7', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/HandBrake_Icon.svg', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'تطبيق مونتاج وتعديل الفيديو السهل والقوي للكمبيوتر.', category: 'media', rating: '4.9', size: '210 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/CapCut_logo.svg', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'البرنامج الأقوى للبث المباشر وتسجيل الشاشة للألعاب.', category: 'media', rating: '5.0', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/OBS_Studio_Logo.svg', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'البرنامج الأشهر عالمياً لفك وضغط ملفات الأرشيف.', category: 'compression', rating: '4.9', size: '3.5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/WinRAR_icon.svg', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'برنامج مجاني قوي جداً لضغط الفعال وفك جميع الصيغ.', category: 'compression', rating: '4.9', size: '2 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/7-Zip_Logo.svg', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'أداة مجانية لفك الضغط بمميزات أمان متقدمة.', category: 'compression', rating: '4.7', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/PeaZip_logo.svg', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'حزمة تشغيل برامج وتطبيقات سطح المكتب المبنية على .NET 8.', category: 'runtimes', rating: '4.9', size: '55 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'حزم ريدستريبيوتبل الضرورية جداً لتشغيل الألعاب وبرامج الكمبيوتر.', category: 'runtimes', rating: '5.0', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Visual_Studio_Icon_2022.svg', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'محرر الكود الأفضل والأكثر طلباً للمطورين.', category: 'dev', rating: '5.0', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'لغة البرمجة الذكية الأشهر لتطوير الذكاء الاصطناعي والسكربتات.', category: 'dev', rating: '4.9', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'أداة إدارة النسخ والتحكم في الشفرات المصدرية.', category: 'dev', rating: '4.9', size: '60 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'محرر الكود المدمج بالذكاء الاصطناعي للمطورين.', category: 'dev', rating: '4.9', size: '150 MB', icon: 'https://www.cursor.com/favicon.ico', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'تطبيق تدوين الملاحظات الفخم والذكي لربط الأفكار.', category: 'dev', rating: '4.9', size: '70 MB', icon: 'https://obsidian.md/images/obsidian-logo-gradient.svg', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'محرر نصوص خفيف وسريع للملفات البرمجية.', category: 'dev', rating: '4.9', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Notepad%2B%2B_Logo_%28cropped%29.svg', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'برنامج إزالة التثبيت الجذري وتنظيف مخلفات البرامج.', category: 'utilities', rating: '4.9', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Revo_Uninstaller_New_Logo.png', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'أسرع أداة لتحليل مساحة الهارد ديسك ومعرفة الملفات الكبيرة.', category: 'utilities', rating: '4.9', size: '8 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Windows_Folder_Icon.svg', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'أداة كسر السرعة ومراقبة أداء الهاردوير وفريمات الألعاب.', category: 'utilities', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/87/MSI_Logo_2019.svg', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'برنامج لمراقبة درجات حرارة المعالج وكرت الشاشة وفولتية الجهاز.', category: 'utilities', rating: '4.8', size: '5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/CPUID_Logo.svg', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'أداة التحكم عن بعد بالكمبيوتر للدعم الفني.', category: 'utilities', rating: '4.8', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Anydesk-logo.svg', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'برنامج حماية وإزالة الفيروسات والبرمجيات الخبيثة القوي.', category: 'security', rating: '4.9', size: '250 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/43/Malwarebytes_logo_2019.svg', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'مضاد فيروسات مجاني لحماية جهازك ضد التهديدات.', category: 'security', rating: '4.6', size: '400 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Avast_Antivirus_Logo_%282021%29.svg', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'برنامج تعديل الصور الاحترافي المجاني البديل لفوتوشوب.', category: 'imaging', rating: '4.7', size: '300 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/The_GIMP_icon_-_gnome.svg', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'برنامج التصميم والنمذجة ثلاثية الأبعاد 3D الشهير عالمياً.', category: 'imaging', rating: '4.9', size: '200 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'محرر صور خفيف وسهل ومناسب للتعديلات السريعة.', category: 'imaging', rating: '4.8', size: '10 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Paint.NET_Logo.svg', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'برنامج رسم التصاميم المتجهة Vector الاحترافي.', category: 'imaging', rating: '4.7', size: '140 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Inkscape_Logo.svg', url: 'https://inkscape.org/' }
+                ]
+            },
+            en: {
+                dir: 'ltr',
+                title: 'Obsidian Tools - Trusted Tools & Software',
+                heroTitle: 'Trusted Tools & Software',
+                searchPlaceholder: 'Search for a tool or software...',
+                menuBrowse: 'Browse',
+                menuHome: 'Home',
+                menuPopular: 'Popular',
+                menuRated: 'Top Rated',
+                menuCategories: 'Categories',
+                menuBrowsers: 'Browsers',
+                menuMessaging: 'Messaging',
+                menuMedia: 'Media',
+                menuCompression: 'Compression',
+                menuRuntimes: 'Runtimes',
+                menuDev: 'Developer Tools',
+                menuUtilities: 'Utilities',
+                menuSecurity: 'Security',
+                menuImaging: 'Imaging & Design',
+                details: 'Details',
+                download: 'Download',
+                footer: '&copy; 2026 Obsidian Tools. All rights reserved.',
+                report: 'Report Broken Link',
+                tools: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'The fast, secure, and most used web browser worldwide.', category: 'browsers', rating: '4.9', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'Feature-rich browser with built-in ad blocker and free VPN.', category: 'browsers', rating: '4.7', size: '85 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Opera_2015_icon.svg', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'Free and open-source browser focused on privacy and speed.', category: 'browsers', rating: '4.8', size: '75 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_Logo%2C_2019.svg', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'Privacy-focused browser that automatically blocks ads.', category: 'browsers', rating: '4.9', size: '95 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Brave_lion_icon.svg', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'Highly customizable power-user web browser.', category: 'browsers', rating: '4.7', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Vivaldi_web_browser_icon.svg', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'Popular video conferencing and remote learning application.', category: 'messaging', rating: '4.7', size: '65 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Zoom_Communications_Logo.svg', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'Voice and text chat app built for gamers and communities.', category: 'messaging', rating: '4.9', size: '80 MB', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', url: 'https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'Collaboration and professional video meeting platform.', category: 'messaging', rating: '4.6', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'Official desktop client for fast and secure messaging.', category: 'messaging', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'Powerful multimedia player supporting almost all formats.', category: 'media', rating: '4.9', size: '40 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/VLC_Icon.svg', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'Popular music and podcast streaming service.', category: 'media', rating: '4.8', size: '70 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'Open-source audio recording and editing software.', category: 'media', rating: '4.8', size: '30 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Audacity_Logo.svg', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'Professional video transcoder and compression tool.', category: 'media', rating: '4.7', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/HandBrake_Icon.svg', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'Easy and powerful video editing application for desktop.', category: 'media', rating: '4.9', size: '210 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/CapCut_logo.svg', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'Free and open-source software for live streaming and recording.', category: 'media', rating: '5.0', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/OBS_Studio_Logo.svg', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'Popular archiver and archive management utility.', category: 'compression', rating: '4.9', size: '3.5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/WinRAR_icon.svg', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'High compression ratio file archiver utility.', category: 'compression', rating: '4.9', size: '2 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/7-Zip_Logo.svg', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'Free file archiver utility with advanced security features.', category: 'compression', rating: '4.7', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/PeaZip_logo.svg', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'Enables you to run existing desktop applications built on .NET 8.', category: 'runtimes', rating: '4.9', size: '55 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'Required runtime components for running C++ games and apps.', category: 'runtimes', rating: '5.0', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Visual_Studio_Icon_2022.svg', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'Streamlined code editor with support for development operations.', category: 'dev', rating: '5.0', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'Powerful programming language for AI and script development.', category: 'dev', rating: '4.9', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'Fast, scalable, distributed revision control system.', category: 'dev', rating: '4.9', size: '60 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'Built-in AI-powered code editor for developers.', category: 'dev', rating: '4.9', size: '150 MB', icon: 'https://www.cursor.com/favicon.ico', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'Powerful knowledge base that works on local Markdown files.', category: 'dev', rating: '4.9', size: '70 MB', icon: 'https://obsidian.md/images/obsidian-logo-gradient.svg', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'Lightweight and fast source code editor.', category: 'dev', rating: '4.9', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Notepad%2B%2B_Logo_%28cropped%29.svg', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'Advanced software uninstaller and system cleaner.', category: 'utilities', rating: '4.9', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Revo_Uninstaller_New_Logo.png', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'Fastest disk space analyzer for Windows.', category: 'utilities', rating: '4.9', size: '8 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Windows_Folder_Icon.svg', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'Ultimate graphics card overclocking and hardware monitoring utility.', category: 'utilities', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/87/MSI_Logo_2019.svg', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'Hardware monitoring program that reads PC system health.', category: 'utilities', rating: '4.8', size: '5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/CPUID_Logo.svg', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'Fast remote desktop application for technical support.', category: 'utilities', rating: '4.8', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Anydesk-logo.svg', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'Powerful anti-malware and threat removal tool.', category: 'security', rating: '4.9', size: '250 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/43/Malwarebytes_logo_2019.svg', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'Free antivirus protection against malware and viruses.', category: 'security', rating: '4.6', size: '400 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Avast_Antivirus_Logo_%282021%29.svg', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'Free and open-source image editor and photo retouching tool.', category: 'imaging', rating: '4.7', size: '300 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/The_GIMP_icon_-_gnome.svg', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'Free and open-source 3D creation suite.', category: 'imaging', rating: '4.9', size: '200 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'Image and photo editing software for Windows.', category: 'imaging', rating: '4.8', size: '10 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Paint.NET_Logo.svg', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'Professional vector graphics editor.', category: 'imaging', rating: '4.7', size: '140 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Inkscape_Logo.svg', url: 'https://inkscape.org/' }
+                ]
+            },
+            fr: {
+                dir: 'ltr',
+                title: 'Obsidian Tools - Outils et Logiciels Fiables',
+                heroTitle: 'Outils et Logiciels Fiables',
+                searchPlaceholder: 'Rechercher un outil ou un logiciel...',
+                menuBrowse: 'Parcourir',
+                menuHome: 'Accueil',
+                menuPopular: 'Populaires',
+                menuRated: 'Mieux Notés',
+                menuCategories: 'Catégories',
+                menuBrowsers: 'Navigateurs',
+                menuMessaging: 'Messagerie',
+                menuMedia: 'Médias',
+                menuCompression: 'Compression',
+                menuRuntimes: 'Runtimes',
+                menuDev: 'Outils Dev',
+                menuUtilities: 'Utilitaires',
+                menuSecurity: 'Sécurité',
+                menuImaging: 'Image & Design',
+                details: 'Détails',
+                download: 'Télécharger',
+                footer: '&copy; 2026 Obsidian Tools. Tous droits réservés.',
+                report: 'Signaler un lien rompu',
+                tools: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'Le navigateur web rapide, sécurisé et le plus utilisé au monde.', category: 'browsers', rating: '4.9', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/Google_Chrome_icon_%28February_2022%29.svg', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'Navigateur riche en fonctionnalités avec bloqueur de pubs et VPN gratuit.', category: 'browsers', rating: '4.7', size: '85 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/49/Opera_2015_icon.svg', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'Navigateur libre et open-source axé sur la confidentialité et la vitesse.', category: 'browsers', rating: '4.8', size: '75 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/Firefox_Logo%2C_2019.svg', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'edge', name: 'Microsoft Edge', desc: 'Navigateur web officiel basé sur Chromium par Microsoft.', category: 'browsers', rating: '4.6', size: '100 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Microsoft_Edge_logo_%282019%29.svg', url: 'https://c2rinstallers.msedge.com/updates/MicrosoftEdgeEnterpriseX64.msi' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'Navigateur axé sur la confidentialité qui bloque les pubs automatiquement.', category: 'browsers', rating: '4.9', size: '95 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Brave_lion_icon.svg', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'Navigateur web hautement personnalisable pour utilisateurs avancés.', category: 'browsers', rating: '4.7', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Vivaldi_web_browser_icon.svg', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'Application populaire de visioconférence et de cours en ligne.', category: 'messaging', rating: '4.7', size: '65 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Zoom_Communications_Logo.svg', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'Application de chat vocal et textuel pour les joueurs et communautés.', category: 'messaging', rating: '4.9', size: '80 MB', icon: 'https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png', url: 'https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'Plateforme de collaboration et de réunions professionnelles.', category: 'messaging', rating: '4.6', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'Client de bureau officiel pour une messagerie rapide et sécurisée.', category: 'messaging', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'Lecteur multimédia puissant prenant en charge presque tous les formats.', category: 'media', rating: '4.9', size: '40 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/VLC_Icon.svg', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'Service de streaming de musique et podcasts populaire.', category: 'media', rating: '4.8', size: '70 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'Logiciel open-source d\'enregistrement et d\'édition audio.', category: 'media', rating: '4.8', size: '30 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Audacity_Logo.svg', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'Outil de transcodage et de compression vidéo professionnel.', category: 'media', rating: '4.7', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/HandBrake_Icon.svg', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'Application de montage vidéo facile et puissante pour ordinateur.', category: 'media', rating: '4.9', size: '210 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/CapCut_logo.svg', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'Logiciel gratuit et open-source pour le streaming et l\'enregistrement.', category: 'media', rating: '5.0', size: '120 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/d/d3/OBS_Studio_Logo.svg', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'Utilitaire d\'archivage et de gestion d\'archives populaire.', category: 'compression', rating: '4.9', size: '3.5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/WinRAR_icon.svg', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'Utilitaire d\'archivage de fichiers à taux de compression élevé.', category: 'compression', rating: '4.9', size: '2 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/cf/7-Zip_Logo.svg', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'Utilitaire d\'archivage gratuit avec fonctions de sécurité avancées.', category: 'compression', rating: '4.7', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/PeaZip_logo.svg', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'Permet d\'exécuter des applications de bureau existantes construites sur .NET 8.', category: 'runtimes', rating: '4.9', size: '55 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/.NET_Core_Logo.svg', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'net48', name: '.NET Framework 4.8.1', desc: 'Composant évolutif Microsoft pour exécuter des applications Windows traditionnelles.', category: 'runtimes', rating: '4.9', size: '68 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg', url: 'https://go.microsoft.com/fwlink/?linkid=2203304' },
+                    { id: 'javajdk', name: 'Java JDK (Adoptium) x64', desc: 'Environnement de développement logiciel pour applications Java.', category: 'runtimes', rating: '4.8', size: '170 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0f/Java_logo_new.svg', url: 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.10_7.msi' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'Composants d\'exécution requis pour exécuter des jeux et applications C++.', category: 'runtimes', rating: '5.0', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Visual_Studio_Icon_2022.svg', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'Éditeur de code optimisé avec prise en charge des opérations de développement.', category: 'dev', rating: '5.0', size: '90 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'Langage de programmation puissant pour l\'IA et le développement de scripts.', category: 'dev', rating: '4.9', size: '25 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'Système de contrôle de révision distribué, rapide et évolutif.', category: 'dev', rating: '4.9', size: '60 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Git-logo.svg', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'Éditeur de code intégré alimenté par l\'IA pour les développeurs.', category: 'dev', rating: '4.9', size: '150 MB', icon: 'https://www.cursor.com/favicon.ico', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'Base de connaissances puissante qui fonctionne sur des fichiers Markdown locaux.', category: 'dev', rating: '4.9', size: '70 MB', icon: 'https://obsidian.md/images/obsidian-logo-gradient.svg', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'Éditeur de code source léger et rapide.', category: 'dev', rating: '4.9', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Notepad%2B%2B_Logo_%28cropped%29.svg', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'Désinstalleur de logiciels avancé et nettoyeur de système.', category: 'utilities', rating: '4.9', size: '15 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Revo_Uninstaller_New_Logo.png', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'Analyseur d\'espace disque le plus rapide pour Windows.', category: 'utilities', rating: '4.9', size: '8 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Windows_Folder_Icon.svg', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'Utilitaire ultime d\'overclocking de carte graphique et de surveillance.', category: 'utilities', rating: '4.9', size: '50 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/8/87/MSI_Logo_2019.svg', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'Programme de surveillance matérielle qui lit la santé du système PC.', category: 'utilities', rating: '4.8', size: '5 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/CPUID_Logo.svg', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'Application de bureau à distance rapide pour le support technique.', category: 'utilities', rating: '4.8', size: '4 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Anydesk-logo.svg', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'Outil puissant anti-malware et de suppression des menaces.', category: 'security', rating: '4.9', size: '250 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/43/Malwarebytes_logo_2019.svg', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'Protection antivirus gratuite contre les logiciels malveillants.', category: 'security', rating: '4.6', size: '400 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Avast_Antivirus_Logo_%282021%29.svg', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'Éditeur d\'images et outil de retouche photo gratuit et open-source.', category: 'imaging', rating: '4.7', size: '300 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/4/45/The_GIMP_icon_-_gnome.svg', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'Suite de création 3D gratuite et open-source.', category: 'imaging', rating: '4.9', size: '200 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Blender_logo_no_text.svg', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'Logiciel d\'édition d\'images et de photos pour Windows.', category: 'imaging', rating: '4.8', size: '10 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Paint.NET_Logo.svg', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'Éditeur de graphiques vectoriels professionnel.', category: 'imaging', rating: '4.7', size: '140 MB', icon: 'https://upload.wikimedia.org/wikipedia/commons/0/0b/Inkscape_Logo.svg', url: 'https://inkscape.org/' }
+                ]
+            }
+        };
+
+        let currentLang = localStorage.getItem('obsidian_lang') || 'ar';
+        let currentFilter = 'all';
+
+        function initApp() {
+            document.getElementById('langSelect').value = currentLang;
+            applyLanguage(currentLang);
+            renderTools();
+        }
+
+        function changeLanguageDropdown() {
+            const select = document.getElementById('langSelect');
+            currentLang = select.value;
+            localStorage.setItem('obsidian_lang', currentLang);
+            applyLanguage(currentLang);
+            renderTools();
+        }
+
+        function applyLanguage(lang) {
+            const t = translations[lang] || translations['ar'];
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', t.dir);
+            document.getElementById('pageTitle').innerText = t.title;
+            document.getElementById('heroTitle').innerText = t.heroTitle;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            
+            document.getElementById('menuTitleBrowse').innerText = t.menuBrowse;
+            document.getElementById('menuHome').innerText = t.menuHome;
+            document.getElementById('menuPopular').innerText = t.menuPopular;
+            document.getElementById('menuRated').innerText = t.menuRated;
+            document.getElementById('menuTitleCategories').innerText = t.menuCategories;
+            document.getElementById('menuBrowsers').innerText = t.menuBrowsers;
+            document.getElementById('menuMessaging').innerText = t.menuMessaging;
+            document.getElementById('menuMedia').innerText = t.menuMedia;
+            document.getElementById('menuCompression').innerText = t.menuCompression;
+            document.getElementById('menuRuntimes').innerText = t.menuRuntimes;
+            document.getElementById('menuDev').innerText = t.menuDev;
+            document.getElementById('menuUtilities').innerText = t.menuUtilities;
+            document.getElementById('menuSecurity').innerText = t.menuSecurity;
+            document.getElementById('menuImaging').innerText = t.menuImaging;
+            document.getElementById('footerText').innerHTML = t.footer;
+            document.getElementById('reportLink').innerText = t.report;
+        }
+
+        function filterCategory(category, event) {
+            if (event) event.preventDefault();
+            currentFilter = category;
+            
+            document.querySelectorAll('aside .menu-item').forEach(item => item.classList.remove('active'));
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+            renderTools();
+        }
+
+        function filterTools() {
+            renderTools();
+        }
+
+        function renderTools() {
+            const t = translations[currentLang] || translations['ar'];
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = '';
+
+            let filtered = t.tools.filter(tool => {
+                const matchesSearch = tool.name.toLowerCase().includes(searchQuery) || tool.desc.toLowerCase().includes(searchQuery);
+                if (!matchesSearch) return false;
+
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'popular') return parseFloat(tool.rating) >= 4.9;
+                if (currentFilter === 'rated') return parseFloat(tool.rating) >= 4.9;
+                return tool.category === currentFilter;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">لا توجد نتائج مطابقة لبحثك.</p>`;
+                return;
+            }
+
+            filtered.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="tool-header">
+                            <div class="tool-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <span>${tool.rating}</span>
+                            </div>
+                        </div>
+                        <div class="tool-title-row">
+                            <img src="${tool.icon}" alt="${tool.name}" class="tool-icon" onerror="this.src='logo.png'">
+                            <h3 style="font-size: 16px; color: var(--text-main);">${tool.name}</h3>
+                        </div>
+                        <div class="tool-body">
+                            <p>${tool.desc}</p>
+                        </div>
+                    </div>
+                    <div class="tool-footer">
+                        <span>${tool.size}</span>
+                        <div class="card-actions">
+                            <a href="tool-details.html?tool=${tool.id}&lang=${currentLang}" class="details-btn">${t.details}</a>
+                            <a href="${tool.url}" class="quick-dl-btn" target="_blank" rel="noopener noreferrer" title="تحميل مباشر"><i class="fa-solid fa-download"></i></a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.className = 'fa-solid fa-sun';
+                localStorage.setItem('obsidian_theme', 'light');
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-moon';
+                localStorage.setItem('obsidian_theme', 'dark');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('obsidian_theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+            }
+            initApp();
+        });
+    </script>
+</body>
+</html>

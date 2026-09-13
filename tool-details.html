@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Obsidian Tools - تفاصيل الأداة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #121212;
+            --bg-header: #181818;
+            --bg-card: #181818;
+            --border-color: #282828;
+            --border-card: #252525;
+            --text-main: #e0e0e0;
+            --text-muted: #999;
+            --input-bg: #1a1a1a;
+            --input-border: #2c2c2c;
+            --footer-bg: #141414;
+        }
+
+        html.light {
+            --bg-body: #f4f5f7;
+            --bg-header: #ffffff;
+            --bg-card: #ffffff;
+            --border-color: #cbd5e1;
+            --border-card: #cbd5e1;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --input-bg: #f9fafb;
+            --input-border: #d1d5db;
+            --footer-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--bg-header);
+            border-bottom: 2px solid var(--border-color);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+        .logo img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+        .logo span {
+            color: #ff6600;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .home-btn, .lang-select {
+            background-color: var(--input-bg);
+            color: var(--text-main);
+            border: 1px solid var(--input-border);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .home-btn:hover, .lang-select:hover {
+            border-color: #ff6600;
+        }
+        .content-area {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tool-detail-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .tool-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .download-btn {
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .download-btn:hover {
+            opacity: 0.9;
+        }
+        .tool-meta-info {
+            display: flex;
+            gap: 15px;
+            color: var(--text-muted);
+            font-size: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .tool-meta-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .section-title {
+            font-size: 16px;
+            color: #ff6600;
+            margin-bottom: 8px;
+            font-weight: 600;
+            border-right: 3px solid #ff6600;
+            padding-right: 8px;
+        }
+        html[dir="ltr"] .section-title {
+            border-right: none;
+            border-left: 3px solid #ff6600;
+            padding-right: 0;
+            padding-left: 8px;
+        }
+        .tool-info-section p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+        .tech-specs-box {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .spec-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .spec-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            border-top: 2px solid var(--border-color);
+            background-color: var(--footer-bg);
+        }
+        footer a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .tech-specs-box {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Logo" onerror="this.src='logo.jpg'">
+            Obsidian<span>Tools</span>
+        </a>
+        <div class="nav-right">
+            <select id="langSelect" class="lang-select" onchange="changeLanguageDropdown(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+            <a href="index.html" class="home-btn" id="homeBtn">الصفحة الرئيسية</a>
+        </div>
+    </header>
+
+    <div class="content-area">
+        <div class="tool-detail-card" id="toolCardContainer">
+            <!-- سيتم تعبئة البيانات عبر الـ JavaScript -->
+        </div>
+    </div>
+
+    <footer>
+        <span id="footerText">&copy; 2026 Obsidian Tools. جميع الحقوق محفوظة.</span> | <a href="report.html" id="reportLink">الإبلاغ عن رابط معطل</a>
+    </footer>
+
+    <script>
+        const toolsData = {
+            ar: {
+                home: "الصفحة الرئيسية",
+                categoryLabel: "التصنيف",
+                sizeLabel: "الحجم",
+                descTitle: "وصف الأداة",
+                specsTitle: "المواصفات التقنية",
+                versionLabel: "إصدار البرنامج",
+                licenseLabel: "نوع الترخيص",
+                platformLabel: "توافق النظام",
+                updateLabel: "تاريخ التحديث",
+                downloadBtn: "تحميل آمن",
+                notFound: "عذراً، هذه الأداة غير موجودة في قاعدة البيانات.",
+                footer: "&copy; 2026 Obsidian Tools. جميع الحقوق محفوظة.",
+                report: "الإبلاغ عن رابط معطل",
+                list: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'متصفح جوجل كروم السريع والأكثر استخداماً في العالم لتصفح الإنترنت بكفاءة عالية.', category: 'المتصفحات', rating: '4.9', size: '11.8 MB', version: 'Stable Latest', license: 'Free / Freeware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'متصفح أوبرا المتميز بمانع الإعلانات المدمج وخدمة VPN مجانية وميزات توفير البطارية.', category: 'المتصفحات', rating: '4.7', size: '85 MB', version: 'v108.0', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'متصفح فايرفوكس الحر والمفتوح المصدر لحماية خصوصيتك ومنع تتبع بياناتك أثناء التصفح.', category: 'المتصفحات', rating: '4.8', size: '75 MB', version: 'v123.0', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'edge', name: 'Microsoft Edge', desc: 'متصفح مايكروسوفت إيدج الرسمي المبني على نواة كروميوم مع أدوات الذكاء الاصطناعي Copilot.', category: 'المتصفحات', rating: '4.6', size: '100 MB', version: 'v122.0', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://c2rinstallers.msedge.com/updates/MicrosoftEdgeEnterpriseX64.msi' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'متصفح برايف يمنع الإعلانات وملفات التتبع تلقائياً ويحافظ على الخصوصية والسرعة.', category: 'المتصفحات', rating: '4.9', size: '95 MB', version: 'v1.63', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'متصفح قابل للتخصيص بشكل كامل وموجه للمحترفين.', category: 'المتصفحات', rating: '4.7', size: '90 MB', version: 'v6.6', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'تطبيق الاجتماعات المرئية والدروس عن بعد الشهير.', category: 'المراسلة', rating: '4.7', size: '65 MB', version: 'v5.17', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'تطبيق الدردشة الصوتية والنصية الأول للاعبين والمجتمعات.', category: 'المراسلة', rating: '4.9', size: '80 MB', version: 'Latest Stable', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'منصة مايكروسوفت للعمل الجماعي والاجتماعات المهنية.', category: 'المراسلة', rating: '4.6', size: '120 MB', version: 'v25000', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'تطبيق التليجرام الرسمي للكمبيوتر للتواصل السريع.', category: 'المراسلة', rating: '4.9', size: '50 MB', version: 'v4.14', license: 'Free / Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'مشغل الوسائط الأقوى عالمياً لتشغيل جميع صيغ الفيديو والصوت دون الحاجة لحزم كودكس خارجية.', category: 'الوسائط', rating: '4.9', size: '40 MB', version: 'v3.0.20', license: 'Open Source', platform: 'All Windows', updateDate: 'September 2026', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'تطبيق الاستماع للموسيقى والبودكاست الشهير للوصول إلى مكتبة ضخمة من الأغاني.', category: 'الوسائط', rating: '4.8', size: '70 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'برنامج تسجيل وتحرير الصوت المفتوح المصدر.', category: 'الوسائط', rating: '4.8', size: '30 MB', version: 'v3.4.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'برنامج تحويل وضغط ملفات الفيديو باحترافية عالية.', category: 'الوسائط', rating: '4.7', size: '25 MB', version: 'v1.7.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'تطبيق مونتاج وتعديل الفيديو السهل والقوي للكمبيوتر مع قوالب جاهزة وميزات ذكاء اصطناعي.', category: 'الوسائط', rating: '4.9', size: '210 MB', version: 'v3.2.0', license: 'Free / In-App', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'البرنامج الأقوى للبث المباشر وتسجيل الشاشة للألعاب بجودة عالية.', category: 'الوسائط', rating: '5.0', size: '120 MB', version: 'v30.0.2', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'البرنامج الأشهر عالمياً لفك وضغط ملفات الأرشيف مع دعم كامل لصيغ RAR و ZIP.', category: 'ضغط الملفات', rating: '4.9', size: '3.5 MB', version: 'v7.00', license: 'Shareware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'برنامج مجاني قوي جداً لضغط الفعال وفك جميع الصيغ بنسبة ضغط عالية.', category: 'ضغط الملفات', rating: '4.9', size: '2 MB', version: 'v24.01', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'أداة مجانية لفك الضغط بمميزات أمان متقدمة.', category: 'ضغط الملفات', rating: '4.7', size: '15 MB', version: 'v9.6', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'حزمة تشغيل برامج وتطبيقات سطح المكتب المبنية على .NET 8.', category: 'المكتبات والتشغيل', rating: '4.9', size: '55 MB', version: '8.0.3', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'net48', name: '.NET Framework 4.8.1', desc: 'حزمة مايكروسوفت الأساسية لتشغيل برامج ويندوز التقليدية.', category: 'المكتبات والتشغيل', rating: '4.9', size: '68 MB', version: '4.8.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://go.microsoft.com/fwlink/?linkid=2203304' },
+                    { id: 'javajdk', name: 'Java JDK (Adoptium) x64', desc: 'بيئة تطوير وتشغيل برامج جافا الشهيرة.', category: 'المكتبات والتشغيل', rating: '4.8', size: '170 MB', version: '17.0.10', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.10_7.msi' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'حزم ريدستريبيوتبل الضرورية جداً لتشغيل الألعاب وبرامج الكمبيوتر.', category: 'المكتبات والتشغيل', rating: '5.0', size: '25 MB', version: 'Latest 2022', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'محرر الكود الأفضل والأكثر طلباً للمطورين مع دعم الإضافات والذكاء الاصطناعي.', category: 'أدوات المطورين', rating: '5.0', size: '90 MB', version: 'v1.87', license: 'Free / Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'لغة البرمجة الذكية الأشهر لتطوير الذكاء الاصطناعي والسكربتات وتطبيقات الويب.', category: 'أدوات المطورين', rating: '4.9', size: '25 MB', version: '3.12.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'أداة إدارة النسخ والتحكم في الشفرات المصدرية.', category: 'أدوات المطورين', rating: '4.9', size: '60 MB', version: 'v2.44.0', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'محرر الكود المدمج بالذكاء الاصطناعي للمطورين.', category: 'أدوات المطورين', rating: '4.9', size: '150 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'تطبيق تدوين الملاحظات الفخم والذكي لربط الأفكار.', category: 'أدوات المطورين', rating: '4.9', size: '70 MB', version: 'v1.5', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'محرر نصوص خفيف وسريع للملفات البرمجية.', category: 'أدوات المطورين', rating: '4.9', size: '4 MB', version: 'v8.6', license: 'Open Source', platform: 'Windows', updateDate: 'September 2026', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'برنامج إزالة التثبيت الجذري وتنظيف مخلفات البرامج من الريجستري والقرص.', category: 'أدوات النظام', rating: '4.9', size: '15 MB', version: 'v5.2.1', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'أسرع أداة لتحليل مساحة الهارد ديسك ومعرفة الملفات الكبيرة والمستهلكة للمساحة.', category: 'أدوات النظام', rating: '4.9', size: '8 MB', version: 'v4.16', license: 'Free for Personal', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'أداة كسر السرعة ومراقبة أداء الهاردوير وفريمات الألعاب.', category: 'أدوات النظام', rating: '4.9', size: '50 MB', version: 'v4.6.5', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'برنامج لمراقبة درجات حرارة المعالج وكرت الشاشة وفولتية الجهاز.', category: 'أدوات النظام', rating: '4.8', size: '5 MB', version: 'v1.53', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'أداة التحكم عن بعد بالكمبيوتر للدعم الفني.', category: 'أدوات النظام', rating: '4.8', size: '4 MB', version: 'v8.0', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'برنامج حماية وإزالة الفيروسات والبرمجيات الخبيثة القوي.', category: 'الأمان والحماية', rating: '4.9', size: '250 MB', version: 'v5.0', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'مضاد فيروسات مجاني لحماية جهازك ضد التهديدات.', category: 'الأمان والحماية', rating: '4.6', size: '400 MB', version: 'v23.x', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'برنامج تعديل الصور الاحترافي المجاني البديل لفوتوشوب.', category: 'التصميم والصور', rating: '4.7', size: '300 MB', version: 'v2.10', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'برنامج التصميم والنمذجة ثلاثية الأبعاد 3D الشهير عالمياً.', category: 'التصميم والصور', rating: '4.9', size: '200 MB', version: 'v4.0', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'محرر صور خفيف وسهل ومناسب للتعديلات السريعة.', category: 'التصميم والصور', rating: '4.8', size: '10 MB', version: 'v5.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'برنامج رسم التصاميم المتجهة Vector الاحترافي.', category: 'التصميم والصور', rating: '4.7', size: '140 MB', version: 'v1.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://inkscape.org/' }
+                ]
+            },
+            en: {
+                home: "Home",
+                categoryLabel: "Category",
+                sizeLabel: "Size",
+                descTitle: "Tool Description",
+                specsTitle: "Technical Specifications",
+                versionLabel: "Version",
+                licenseLabel: "License",
+                platformLabel: "Platform",
+                updateLabel: "Updated",
+                downloadBtn: "Secure Download",
+                notFound: "Sorry, this tool does not exist in the database.",
+                footer: "&copy; 2026 Obsidian Tools. All rights reserved.",
+                report: "Report Broken Link",
+                list: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'The fast, secure, and most used web browser worldwide.', category: 'Browsers', rating: '4.9', size: '11.8 MB', version: 'Stable Latest', license: 'Free / Freeware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'Feature-rich browser with built-in ad blocker and free VPN.', category: 'Browsers', rating: '4.7', size: '85 MB', version: 'v108.0', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'Free and open-source browser focused on privacy and speed.', category: 'Browsers', rating: '4.8', size: '87.5 MB', version: 'v123.0', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'edge', name: 'Microsoft Edge', desc: 'Official Chromium-based web browser from Microsoft.', category: 'Browsers', rating: '4.6', size: '100 MB', version: 'v122.0', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://c2rinstallers.msedge.com/updates/MicrosoftEdgeEnterpriseX64.msi' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'Privacy-focused browser that automatically blocks ads.', category: 'Browsers', rating: '4.9', size: '1.2 MB', version: 'v1.63', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'Highly customizable power-user web browser.', category: 'Browsers', rating: '4.7', size: '90 MB', version: 'v6.6', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'Popular video conferencing and remote learning application.', category: 'Messaging', rating: '4.7', size: '113 MB', version: 'v5.17', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'Voice and text chat app built for gamers and communities.', category: 'Messaging', rating: '4.9', size: '102 MB', version: 'Latest Stable', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://github.com/adam213-sudo/obsidian-tools-files/releases/download/v1.0.0/DiscordSetup.exe' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'Collaboration and professional video meeting platform.', category: 'Messaging', rating: '4.6', size: '120 MB', version: 'v25000', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'Official desktop client for fast and secure messaging.', category: 'Messaging', rating: '4.9', size: '53.1 MB', version: 'v4.14', license: 'Free / Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'Powerful multimedia player supporting almost all formats.', category: 'Media', rating: '4.9', size: '40 MB', version: 'v3.0.20', license: 'Open Source', platform: 'All Windows', updateDate: 'September 2026', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'Popular music and podcast streaming service.', category: 'Media', rating: '4.8', size: '1 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'Open-source audio recording and editing software.', category: 'Media', rating: '4.8', size: '30 MB', version: 'v3.4.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'Professional video transcoder and compression tool.', category: 'Media', rating: '4.7', size: '25 MB', version: 'v1.7.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'Easy and powerful video editing application for desktop.', category: 'Media', rating: '4.9', size: '210 MB', version: 'v3.2.0', license: 'Free / In-App', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'Free and open-source software for live streaming and recording.', category: 'Media', rating: '5.0', size: '120 MB', version: 'v30.0.2', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'Popular archiver and archive management utility.', category: 'Compression', rating: '4.9', size: '3.5 MB', version: 'v7.00', license: 'Shareware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'High compression ratio file archiver utility.', category: 'Compression', rating: '4.9', size: '2 MB', version: 'v24.01', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'Free file archiver utility with advanced security features.', category: 'Compression', rating: '4.7', size: '15 MB', version: 'v9.6', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'Enables you to run existing desktop applications built on .NET 8.', category: 'Runtimes', rating: '4.9', size: '55 MB', version: '8.0.3', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'net48', name: '.NET Framework 4.8.1', desc: 'Microsoft scalable component for running traditional Windows apps.', category: 'Runtimes', rating: '4.9', size: '68 MB', version: '4.8.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://go.microsoft.com/fwlink/?linkid=2203304' },
+                    { id: 'javajdk', name: 'Java JDK (Adoptium) x64', desc: 'Software development environment for Java applications.', category: 'Runtimes', rating: '4.8', size: '170 MB', version: '17.0.10', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.10_7.msi' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'Required runtime components for running C++ games and apps.', category: 'Runtimes', rating: '5.0', size: '25 MB', version: 'Latest 2022', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'Streamlined code editor with support for development operations.', category: 'Developer Tools', rating: '5.0', size: '90 MB', version: 'v1.87', license: 'Free / Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'Powerful programming language for AI and script development.', category: 'Developer Tools', rating: '4.9', size: '25 MB', version: '3.12.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'Fast, scalable, distributed revision control system.', category: 'Developer Tools', rating: '4.9', size: '60 MB', version: 'v2.44.0', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'Built-in AI-powered code editor for developers.', category: 'Developer Tools', rating: '4.9', size: '150 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'Powerful knowledge base that works on local Markdown files.', category: 'Developer Tools', rating: '4.9', size: '70 MB', version: 'v1.5', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'Lightweight and fast source code editor.', category: 'Developer Tools', rating: '4.9', size: '4 MB', version: 'v8.6', license: 'Open Source', platform: 'Windows', updateDate: 'September 2026', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'Advanced software uninstaller and system cleaner.', category: 'Utilities', rating: '4.9', size: '15 MB', version: 'v5.2.1', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'Fastest disk space analyzer for Windows.', category: 'Utilities', rating: '4.9', size: '8 MB', version: 'v4.16', license: 'Free for Personal', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'Ultimate graphics card overclocking and hardware monitoring utility.', category: 'Utilities', rating: '4.9', size: '50 MB', version: 'v4.6.5', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'Hardware monitoring program that reads PC system health.', category: 'Utilities', rating: '4.8', size: '5 MB', version: 'v1.53', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'Fast remote desktop application for technical support.', category: 'Utilities', rating: '4.8', size: '4 MB', version: 'v8.0', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'Powerful anti-malware and threat removal tool.', category: 'Security', rating: '4.9', size: '250 MB', version: 'v5.0', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'Free antivirus protection against malware and viruses.', category: 'Security', rating: '4.6', size: '400 MB', version: 'v23.x', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'Free and open-source image editor and photo retouching tool.', category: 'Imaging & Design', rating: '4.7', size: '300 MB', version: 'v2.10', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'Free and open-source 3D creation suite.', category: 'Imaging & Design', rating: '4.9', size: '200 MB', version: 'v4.0', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'Image and photo editing software for Windows.', category: 'Imaging & Design', rating: '4.8', size: '10 MB', version: 'v5.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'Professional vector graphics editor.', category: 'Imaging & Design', rating: '4.7', size: '140 MB', version: 'v1.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://inkscape.org/' }
+                ]
+            },
+            fr: {
+                home: "Accueil",
+                categoryLabel: "Catégorie",
+                sizeLabel: "Taille",
+                descTitle: "Description de l'outil",
+                specsTitle: "Spécifications techniques",
+                versionLabel: "Version",
+                licenseLabel: "Licence",
+                platformLabel: "Plateforme",
+                updateLabel: "Mise à jour",
+                downloadBtn: "Téléchargement Sécurisé",
+                notFound: "Désolé, cet outil n'existe pas dans la base de données.",
+                footer: "&copy; 2026 Obsidian Tools. Tous droits réservés.",
+                report: "Signaler un lien rompu",
+                list: [
+                    { id: 'chrome', name: 'Google Chrome', desc: 'Le navigateur web rapide, sécurisé et le plus utilisé au monde.', category: 'Navigateurs', rating: '4.9', size: '90 MB', version: 'Stable Latest', license: 'Free / Freeware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://dl.google.com/chrome/install/latest/chrome_installer.exe' },
+                    { id: 'opera', name: 'Opera Browser', desc: 'Navigateur riche en fonctionnalités avec bloqueur de pubs et VPN gratuit.', category: 'Navigateurs', rating: '4.7', size: '85 MB', version: 'v108.0', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://get.opera.com/pub/opera/desktop/' },
+                    { id: 'firefox', name: 'Mozilla Firefox', desc: 'Navigateur libre et open-source axé sur la confidentialité et la vitesse.', category: 'Navigateurs', rating: '4.8', size: '75 MB', version: 'v123.0', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US' },
+                    { id: 'edge', name: 'Microsoft Edge', desc: 'Navigateur web officiel basé sur Chromium par Microsoft.', category: 'Navigateurs', rating: '4.6', size: '100 MB', version: 'v122.0', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://c2rinstallers.msedge.com/updates/MicrosoftEdgeEnterpriseX64.msi' },
+                    { id: 'brave', name: 'Brave Browser', desc: 'Navigateur axé sur la confidentialité qui bloque les pubs automatiquement.', category: 'Navigateurs', rating: '4.9', size: '95 MB', version: 'v1.63', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://laptop-updates.brave.com/latest/winx64' },
+                    { id: 'vivaldi', name: 'Vivaldi Browser', desc: 'Navigateur web hautement personnalisable pour utilisateurs avancés.', category: 'Navigateurs', rating: '4.7', size: '90 MB', version: 'v6.6', license: 'Free', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://downloads.vivaldi.com/stable/Vivaldi.exe' },
+
+                    { id: 'zoom', name: 'Zoom', desc: 'Application populaire de visioconférence et de cours en ligne.', category: 'Messagerie', rating: '4.7', size: '65 MB', version: 'v5.17', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://zoom.us/client/latest/ZoomInstallerFull.exe' },
+                    { id: 'discord', name: 'Discord', desc: 'Application de chat vocal et textuel pour les joueurs et communautés.', category: 'Messagerie', rating: '4.9', size: '80 MB', version: 'Latest Stable', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86' },
+                    { id: 'teams', name: 'Microsoft Teams', desc: 'Plateforme de collaboration et de réunions professionnelles.', category: 'Messagerie', rating: '4.6', size: '120 MB', version: 'v25000', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://statics.teams.cdn.office.net/production-windows-x64/msteams-x64.msi' },
+                    { id: 'telegram', name: 'Telegram Desktop', desc: 'Client de bureau officiel pour une messagerie rapide et sécurisée.', category: 'Messagerie', rating: '4.9', size: '50 MB', version: 'v4.14', license: 'Free / Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://telegram.org/dl/desktop/win64' },
+
+                    { id: 'vlc', name: 'VLC Media Player', desc: 'Lecteur multimédia puissant prenant en charge presque tous les formats.', category: 'Médias', rating: '4.9', size: '40 MB', version: 'v3.0.20', license: 'Open Source', platform: 'All Windows', updateDate: 'September 2026', url: 'https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe' },
+                    { id: 'spotify', name: 'Spotify', desc: 'Service de streaming de musique et podcasts populaire.', category: 'Médias', rating: '4.8', size: '70 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mobile', updateDate: 'September 2026', url: 'https://download.scdn.co/SpotifySetup.exe' },
+                    { id: 'audacity', name: 'Audacity', desc: 'Logiciel open-source d\'enregistrement et d\'édition audio.', category: 'Médias', rating: '4.8', size: '30 MB', version: 'v3.4.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.audacityteam.org/' },
+                    { id: 'handbrake', name: 'HandBrake', desc: 'Outil de transcodage et de compression vidéo professionnel.', category: 'Médias', rating: '4.7', size: '25 MB', version: 'v1.7.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://handbrake.fr/' },
+                    { id: 'capcut', name: 'CapCut Desktop', desc: 'Application de montage vidéo facile et puissante pour ordinateur.', category: 'Médias', rating: '4.9', size: '210 MB', version: 'v3.2.0', license: 'Free / In-App', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.capcut.com/' },
+                    { id: 'obs', name: 'OBS Studio', desc: 'Logiciel gratuit et open-source pour le streaming et l\'enregistrement.', category: 'Médias', rating: '5.0', size: '120 MB', version: 'v30.0.2', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://obsproject.com/' },
+
+                    { id: 'winrar', name: 'WinRAR', desc: 'Utilitaire d\'archivage et de gestion d\'archives populaire.', category: 'Compression', rating: '4.9', size: '3.5 MB', version: 'v7.00', license: 'Shareware', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.rarlab.com/rar/winrar-x64-700.exe' },
+                    { id: '7zip', name: '7-Zip', desc: 'Utilitaire d\'archivage de fichiers à taux de compression élevé.', category: 'Compression', rating: '4.9', size: '2 MB', version: 'v24.01', license: 'Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.7-zip.org/a/7z2401-x64.exe' },
+                    { id: 'peazip', name: 'PeaZip', desc: 'Utilitaire d\'archivage gratuit avec fonctions de sécurité avancées.', category: 'Compression', rating: '4.7', size: '15 MB', version: 'v9.6', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://peazip.github.io/' },
+
+                    { id: 'net8', name: '.NET Desktop Runtime 8.0', desc: 'Permet d\'exécuter des applications de bureau existantes construites sur .NET 8.', category: 'Runtimes', rating: '4.9', size: '55 MB', version: '8.0.3', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.3-windows-x64-installer' },
+                    { id: 'net48', name: '.NET Framework 4.8.1', desc: 'Composant évolutif Microsoft pour exécuter des applications Windows traditionnelles.', category: 'Runtimes', rating: '4.9', size: '68 MB', version: '4.8.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://go.microsoft.com/fwlink/?linkid=2203304' },
+                    { id: 'javajdk', name: 'Java JDK (Adoptium) x64', desc: 'Environnement de développement logiciel pour applications Java.', category: 'Runtimes', rating: '4.8', size: '170 MB', version: '17.0.10', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.10%2B7/OpenJDK17U-jdk_x64_windows_hotspot_17.0.10_7.msi' },
+                    { id: 'vcredist', name: 'Visual C++ Redistributable 2015-2022', desc: 'Composants d\'exécution requis pour exécuter des jeux et applications C++.', category: 'Runtimes', rating: '5.0', size: '25 MB', version: 'Latest 2022', license: 'Free', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://aka.ms/vs/17/release/vc_redist.x64.exe' },
+
+                    { id: 'vscode', name: 'Visual Studio Code', desc: 'Éditeur de code optimisé avec prise en charge des opérations de développement.', category: 'Outils Dev', rating: '5.0', size: '90 MB', version: 'v1.87', license: 'Free / Open Source', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://code.visualstudio.com/sha/download?build=stable&os=win32-x64' },
+                    { id: 'python', name: 'Python 3.12', desc: 'Langage de programmation puissant pour l\'IA et le développement de scripts.', category: 'Outils Dev', rating: '4.9', size: '25 MB', version: '3.12.2', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe' },
+                    { id: 'git', name: 'Git for Windows', desc: 'Système de contrôle de révision distribué, rapide et évolutif.', category: 'Outils Dev', rating: '4.9', size: '60 MB', version: 'v2.44.0', license: 'Open Source', platform: 'Windows x64', updateDate: 'September 2026', url: 'https://github.com/git-for-windows/git/releases/download/v2.44.0.windows.1/Git-2.44.0-64-bit.exe' },
+                    { id: 'cursor', name: 'Cursor AI Editor', desc: 'Éditeur de code intégré alimenté par l\'IA pour les développeurs.', category: 'Outils Dev', rating: '4.9', size: '150 MB', version: 'Latest', license: 'Freemium', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.cursor.com/' },
+                    { id: 'obsidian_note', name: 'Obsidian Notes', desc: 'Base de connaissances puissante qui fonctionne sur des fichiers Markdown locaux.', category: 'Outils Dev', rating: '4.9', size: '70 MB', version: 'v1.5', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://obsidian.md/' },
+                    { id: 'notepadpp', name: 'Notepad++', desc: 'Éditeur de code source léger et rapide.', category: 'Outils Dev', rating: '4.9', size: '4 MB', version: 'v8.6', license: 'Open Source', platform: 'Windows', updateDate: 'September 2026', url: 'https://notepad-plus-plus.org/' },
+
+                    { id: 'revo', name: 'Revo Uninstaller', desc: 'Désinstalleur de logiciels avancé et nettoyeur de système.', category: 'Utilitaires', rating: '4.9', size: '15 MB', version: 'v5.2.1', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.revouninstaller.com/products/revo-uninstaller-free/' },
+                    { id: 'wiztree', name: 'WizTree', desc: 'Analyseur d\'espace disque le plus rapide pour Windows.', category: 'Utilitaires', rating: '4.9', size: '8 MB', version: 'v4.16', license: 'Free for Personal', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://antibodysoftware.com/wiztree/executable/' },
+                    { id: 'afterburner', name: 'MSI Afterburner', desc: 'Utilitaire ultime d\'overclocking de carte graphique et de surveillance.', category: 'Utilitaires', rating: '4.9', size: '50 MB', version: 'v4.6.5', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://download.msi.com/uti_exe/vga/MSIAfterburnerSetup.zip' },
+                    { id: 'hwmonitor', name: 'HWMonitor', desc: 'Programme de surveillance matérielle qui lit la santé du système PC.', category: 'Utilitaires', rating: '4.8', size: '5 MB', version: 'v1.53', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.cpuid.com/softwares/hwmonitor.html' },
+                    { id: 'anydesk', name: 'AnyDesk', desc: 'Application de bureau à distance rapide pour le support technique.', category: 'Utilitaires', rating: '4.8', size: '4 MB', version: 'v8.0', license: 'Free for Personal', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://download.anydesk.com/AnyDesk.exe' },
+
+                    { id: 'malwarebytes', name: 'Malwarebytes', desc: 'Outil puissant anti-malware et de suppression des menaces.', category: 'Sécurité', rating: '4.9', size: '250 MB', version: 'v5.0', license: 'Freemium', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://downloads.malwarebytes.com/file/mb4' },
+                    { id: 'avast', name: 'Avast Free Antivirus', desc: 'Protection antivirus gratuite contre les logiciels malveillants.', category: 'Sécurité', rating: '4.6', size: '400 MB', version: 'v23.x', license: 'Free', platform: 'Windows', updateDate: 'September 2026', url: 'https://www.avast.com/' },
+
+                    { id: 'gimp', name: 'GIMP', desc: 'Éditeur d\'images et outil de retouche photo gratuit et open-source.', category: 'Image & Design', rating: '4.7', size: '300 MB', version: 'v2.10', license: 'Open Source', platform: 'Windows / Linux', updateDate: 'September 2026', url: 'https://www.gimp.org/' },
+                    { id: 'blender', name: 'Blender', desc: 'Suite de création 3D gratuite et open-source.', category: 'Image & Design', rating: '4.9', size: '200 MB', version: 'v4.0', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://www.blender.org/' },
+                    { id: 'paintnet', name: 'Paint.NET', desc: 'Logiciel d\'édition d\'images et de photos pour Windows.', category: 'Image & Design', rating: '4.8', size: '10 MB', version: 'v5.1', license: 'Free', platform: 'Windows 10 / 11', updateDate: 'September 2026', url: 'https://www.getpaint.net/' },
+                    { id: 'inkscape', name: 'Inkscape', desc: 'Éditeur de graphiques vectoriels professionnel.', category: 'Image & Design', rating: '4.7', size: '140 MB', version: 'v1.3', license: 'Open Source', platform: 'Windows / Mac', updateDate: 'September 2026', url: 'https://inkscape.org/' }
+                ]
+            }
+        };
+
+        function getQueryParams() {
+            const params = {};
+            window.location.search.substring(1).split('&').forEach(param => {
+                const pair = param.split('=');
+                if (pair.length === 2) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            });
+            return params;
+        }
+
+        let currentLang = localStorage.getItem('obsidian_lang') || 'ar';
+        const params = getQueryParams();
+        if (params.lang && toolsData[params.lang]) {
+            currentLang = params.lang;
+        }
+
+        function initDetailsPage() {
+            document.getElementById('langSelect').value = currentLang;
+            applyLanguage(currentLang);
+            renderToolDetails();
+        }
+
+        function changeLanguageDropdown(lang) {
+            currentLang = lang;
+            localStorage.setItem('obsidian_lang', currentLang);
+            applyLanguage(currentLang);
+            renderToolDetails();
+        }
+
+        function applyLanguage(lang) {
+            const t = toolsData[lang] || toolsData['ar'];
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'en' || lang === 'fr' ? 'ltr' : 'rtl');
+            document.getElementById('homeBtn').innerText = t.home;
+            document.getElementById('footerText').innerHTML = t.footer;
+            document.getElementById('reportLink').innerText = t.report;
+        }
+
+        function renderToolDetails() {
+            const t = toolsData[currentLang] || toolsData['ar'];
+            const toolId = params.tool;
+            const container = document.getElementById('toolCardContainer');
+
+            const tool = t.list.find(item => item.id === toolId);
+
+            if (!tool) {
+                container.innerHTML = `<p style="text-align: center; color: var(--text-muted); padding: 40px;">${t.notFound}</p>`;
+                return;
+            }
+
+            document.getElementById('pageTitle').innerText = `Obsidian Tools - ${tool.name}`;
+
+            container.innerHTML = `
+                <div class="tool-header-top">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 28px; color: #ff6600; background: var(--input-bg); padding: 12px; border-radius: 12px; border: 1px solid var(--input-border);">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </div>
+                        <div>
+                            <h1 style="font-size: 24px; color: var(--text-main); margin-bottom: 4px;">${tool.name}</h1>
+                            <div class="tool-meta-info">
+                                <span><i class="fa-solid fa-star" style="color: #f59e0b;"></i> ${tool.rating}</span>
+                                <span><i class="fa-solid fa-tag"></i> ${tool.category}</span>
+                                <span><i class="fa-solid fa-hard-drive"></i> ${tool.size}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="${tool.url}" class="download-btn" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-solid fa-download"></i> ${t.downloadBtn}
+                    </a>
+                </div>
+
+                <div class="tool-info-section">
+                    <h3 class="section-title">${t.descTitle}</h3>
+                    <p>${tool.desc}</p>
+                </div>
+
+                <div class="tool-info-section">
+                    <h3 class="section-title">${t.specsTitle}</h3>
+                    <div class="tech-specs-box">
+                        <div class="spec-item">
+                            <span class="spec-label">${t.versionLabel}</span>
+                            <span class="spec-value">${tool.version}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">${t.licenseLabel}</span>
+                            <span class="spec-value">${tool.license}</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">${t.platformLabel}</span>
+                            <span class="spec-value">${tool.platform}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('obsidian_theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            }
+            initDetailsPage();
+        });
+    </script>
+</body>
+</html>
